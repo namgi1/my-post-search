@@ -8,7 +8,8 @@
         function openDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
-                    var redirectUrl = "https://yourapp.com/address-result?address=" + encodeURIComponent(data.roadAddress);
+                    // 선택한 주소를 URL에 추가하여 이동
+                    var redirectUrl = "https://yourflutterflowapp.com/address-result?address=" + encodeURIComponent(data.roadAddress);
                     window.location.href = redirectUrl;
                 }
             }).open();

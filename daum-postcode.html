@@ -17,22 +17,19 @@
 <p class="p1"><span class="s1">&lt;head&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;카카오 주소 검색&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"&gt;&lt;/script&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openDaumPostcode() {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new daum.Postcode({</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>oncomplete: function(data) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 사용자가 주소를 선택하면 알림창으로 출력</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>alert("선택한 주소: " + data.roadAddress);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ FlutterFlow로 선택한 주소를 WebView 내부에서 전달</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>window.ReactNativeWebView.postMessage(data.roadAddress);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).open();</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2&gt;카카오 주소 검색 테스트&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="openDaumPostcode()"&gt;주소 검색&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body onload="openDaumPostcode()"&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/body&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>

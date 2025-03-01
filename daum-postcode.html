@@ -9,10 +9,10 @@
         function openDaumPostcode() {
             var element_wrap = document.getElementById('wrap');
 
-            // ✅ 주소 검색 창을 modal 형식으로 표시
+            // ✅ 주소 검색 창을 WebView 전체에 맞게 표시
             new daum.Postcode({
                 oncomplete: function(data) {
-                    // ✅ FlutterFlow WebView로 선택한 주소 전송
+                    // ✅ 선택한 주소를 FlutterFlow WebView로 전송
                     if (window.ReactNativeWebView) {
                         window.ReactNativeWebView.postMessage(data.roadAddress);
                     } else {
@@ -29,28 +29,49 @@
                 }
             }).embed(element_wrap);
 
-            // ✅ 모달 표시
+            // ✅ 모달을 화면 전체에 표시
             element_wrap.style.display = 'block';
         }
     </script>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
         #wrap {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 400px;
-            background: white;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 1);
             z-index: 100;
-            border: 1px solid #ccc;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        #search-button {
+            width: 90%;
+            max-width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            text-align: center;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <button onclick="openDaumPostcode()">주소 검색</button>
+    <button id="search-button" onclick="openDaumPostcode()">주소 검색</button>
     <div id="wrap"></div>
 </body>
 </html>

@@ -9,8 +9,10 @@
         function openDaumPostcode() {
             var element_wrap = document.getElementById('wrap');
 
-            // ✅ 주소 검색 창을 WebView 전체에 맞게 표시
+            // ✅ 주소 검색 창을 지정된 크기와 위치에 표시
             new daum.Postcode({
+                width: 350, // ✅ 검색 창 가로 크기 지정
+                height: 800, // ✅ 검색 창 세로 크기 지정 (800px로 변경)
                 oncomplete: function(data) {
                     // ✅ 선택한 주소를 FlutterFlow WebView로 전송
                     if (window.ReactNativeWebView) {
@@ -29,7 +31,7 @@
                 }
             }).embed(element_wrap);
 
-            // ✅ 모달을 화면 전체에 표시
+            // ✅ 모달을 왼쪽 상단에 고정
             element_wrap.style.display = 'block';
         }
     </script>
@@ -47,19 +49,22 @@
             background-color: #fff;
         }
 
+        /* ✅ 검색 창을 왼쪽 상단에 고정 */
         #wrap {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 10px;
+            left: 10px;
+            width: 350px; /* ✅ 검색 창 가로 크기 지정 */
+            height: 800px; /* ✅ 검색 창 세로 크기 800px로 변경 */
             background: white;
             z-index: 100;
             overflow: auto; /* ✅ 내부에서도 스크롤 가능하도록 설정 */
+            border: 1px solid #ccc;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* ✅ 주소 검색 버튼을 왼쪽 상단으로 이동 */
+        /* ✅ 주소 검색 버튼을 왼쪽 상단으로 유지 */
         #search-button {
             position: absolute;
             top: 10px;

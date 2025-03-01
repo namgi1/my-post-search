@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "298850343781",
+    "project_id": "hallie-5c03d",
+    "storage_bucket": "hallie-5c03d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298850343781:android:2bddca40919b334581df8c",
+        "android_client_info": {
+          "package_name": "com.mycompany.hallie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "298850343781-0s1c9kaaubp630chldse6phsuvlc1ile.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.hallie",
+            "certificate_hash": "59da67692faa857aca1b14166e2e6d4c0f41584d"
+          }
+        },
+        {
+          "client_id": "298850343781-95con5r7gksttkkts57u3httoa5etp01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.hallie",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "298850343781-t0aerrh7fgneatlfj55ospsacv7iubs1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDDyzDFvUa6LLVBXfDF3nBXNJzTWMlxLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "298850343781-t0aerrh7fgneatlfj55ospsacv7iubs1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "298850343781-n7mkl6n08g2ds1tpnad54ihcv0ostln8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.hallie"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

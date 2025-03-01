@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>카카오 주소 검색</title>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
@@ -14,11 +14,17 @@
                 width: 350, 
                 height: 800, 
                 oncomplete: function(data) {
-                    if (window.ReactNativeWebView) {
+                    console.log("주소 선택됨:", data.roadAddress); // ✅ 주소 선택 로그 출력
+
+                    // ✅ WebView가 존재하는지 확인 후 데이터 전송
+                    if (window.ReactNativeWebView && typeof window.ReactNativeWebView.postMessage === "function") {
                         window.ReactNativeWebView.postMessage(data.roadAddress);
                     } else {
-                        alert("WebView 감지 실패: " + data.roadAddress);
+                        alert("⚠️ WebView 감지 실패: " + data.roadAddress);
+                        console.warn("⚠️ WebView가 감지되지 않음. postMessage 실행 불가.");
                     }
+
+                    // ✅ 모달 닫기
                     element_wrap.style.display = 'none';
                 },
                 onclose: function(state) {
@@ -40,9 +46,9 @@
 
         body, html {
             width: 100%;
-            min-height: 800px; /* ✅ 최소 높이 강제 지정 */
-            height: auto;
-            overflow: visible; /* ✅ 내부 요소가 잘리지 않도록 설정 */
+            height: 100vh; /* ✅ WebView가 전체 크기를 인식하도록 강제 설정 */
+            min-height: 800px;
+            overflow: hidden; /* ✅ 잘리지 않도록 설정 */
             background-color: #fff;
         }
 
@@ -52,15 +58,15 @@
             top: 10px;
             left: 10px;
             width: 350px;
-            min-height: 800px; /* ✅ 최소 높이 강제 지정 */
+            height: 800px;
             background: white;
             z-index: 100;
-            overflow: visible; /* ✅ 잘리지 않도록 설정 */
+            overflow: auto;
             border: 1px solid #ccc;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        /* ✅ 주소 검색 버튼 왼쪽 상단 유지 */
+        /* ✅ 주소 검색 버튼을 왼쪽 상단으로 유지 */
         #search-button {
             position: absolute;
             top: 10px;

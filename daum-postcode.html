@@ -1,21 +1,54 @@
-<!DOCTYPE html>
-<html lang="ko">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카카오 주소 검색</title>
-    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script>
-        function openDaumPostcode() {
-            new daum.Postcode({
-                oncomplete: function(data) {
-                    alert("선택한 주소: " + data.roadAddress);
-                }
-            }).open();
-        }
-    </script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2487.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #a4a4a4}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #a4a4a4; min-height: 13.0px}
+    span.s1 {font-kerning: none}
+  </style>
 </head>
 <body>
-    <button onclick="openDaumPostcode()">주소 검색</button>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="ko"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;카카오 주소 검색&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openDaumPostcode(event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>event.preventDefault();<span class="Apple-converted-space">  </span>// ✅ FlutterFlow에서 새로고침 방지</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new daum.Postcode({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>oncomplete: function(data) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 선택한 주소를 FlutterFlow WebView로 전송</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (window.ReactNativeWebView) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>window.ReactNativeWebView.postMessage(data.roadAddress);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("WebView 감지 실패: " + data.roadAddress);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).open();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ WebView에서 기본 이벤트 차단 (FlutterFlow 새로고침 방지)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.addEventListener("click", function(event) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>event.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ 페이지 로드 시 자동 실행 제거 (버튼 클릭 시에만 실행)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="openDaumPostcode(event)"&gt;주소 검색&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
 </html>

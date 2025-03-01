@@ -8,8 +8,8 @@
         function openDaumPostcode() {
             new daum.Postcode({
                 oncomplete: function(data) {
-                    // ✅ FlutterFlow로 주소 데이터 전달 (새로고침 없이!)
-                    window.postMessage(data.roadAddress, "*");
+                    // ✅ FlutterFlow로 선택한 주소를 WebView 내부에서 전달
+                    window.ReactNativeWebView.postMessage(data.roadAddress);
                 }
             }).open();
         }

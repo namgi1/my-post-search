@@ -7,8 +7,8 @@
   <meta name="Generator" content="Cocoa HTML Writer">
   <meta name="CocoaVersion" content="2487.7">
   <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #818181}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #818181; min-height: 13.0px}
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #6e6e6e}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Apple SD Gothic Neo'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85); background-color: #6e6e6e; min-height: 13.0px}
     span.s1 {font-kerning: none}
   </style>
 </head>
@@ -22,6 +22,9 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"&gt;&lt;/script&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openDaumPostcode() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>var element_wrap = document.getElementById('wrap');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// ✅ 주소 검색 창을 modal 형식으로 표시</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new daum.Postcode({</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>oncomplete: function(data) {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ FlutterFlow WebView로 선택한 주소 전송</span></p>
@@ -30,20 +33,40 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("WebView 감지 실패: " + data.roadAddress);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).open();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ WebView에서 기본 이벤트 차단 (FlutterFlow 새로고침 방지)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>document.addEventListener("DOMContentLoaded", function() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.body.addEventListener("click", function(event) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>event.preventDefault();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, false);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 모달 닫기</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>element_wrap.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>onclose: function(state) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (state === 'COMPLETE_CLOSE') {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>element_wrap.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).embed(element_wrap);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// ✅ 모달 표시</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>element_wrap.style.display = 'block';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#wrap {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: fixed;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>left: 50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: translate(-50%, -50%);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 300px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 400px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background: white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 100;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 1px solid #ccc;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0px 0px 10px rgba(0,0,0,0.1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
 <p class="p1"><span class="s1">&lt;body&gt;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="openDaumPostcode()"&gt;주소 검색&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div id="wrap"&gt;&lt;/div&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/body&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>

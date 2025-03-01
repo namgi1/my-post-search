@@ -8,7 +8,6 @@
   <meta name="CocoaVersion" content="2487.7">
   <style type="text/css">
     p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
     span.s1 {font-kerning: none}
   </style>
 </head>
@@ -24,21 +23,16 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openDaumPostcode() {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new daum.Postcode({</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>oncomplete: function(data) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 선택한 주소를 FlutterFlow WebView로 전송</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (window.ReactNativeWebView) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>window.ReactNativeWebView.postMessage(data.roadAddress);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("WebView가 감지되지 않았습니다.");</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 사용자가 주소를 선택하면 알림창으로 출력</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>alert("선택한 주소: " + data.roadAddress);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).open();</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ 페이지 로드 시 자동 실행</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = openDaumPostcode;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
 <p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h2&gt;카카오 주소 검색 테스트&lt;/h2&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;button onclick="openDaumPostcode()"&gt;주소 검색&lt;/button&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/body&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>

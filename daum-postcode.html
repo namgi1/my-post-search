@@ -15,15 +15,14 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ 안전한 WebView 메시지 전송 방식 적용
-                    if (window.ReactNativeWebView && typeof window.ReactNativeWebView.postMessage === "function") {
-                        window.ReactNativeWebView.postMessage(JSON.stringify({ address: data.roadAddress }));
-                    } else {
-                        console.warn("⚠️ WebView 감지 실패. postMessage 실행 불가. 대체 방식 실행.");
-                        alert("⚠️ WebView 감지 실패: " + data.roadAddress);
+                    // ✅ localStorage에 선택한 주소 저장
+                    localStorage.setItem("selected_address", data.roadAddress);
 
-                        // ✅ 대체 방식: 로컬 스토리지 사용하여 FlutterFlow에서 직접 읽을 수 있도록 함
-                        localStorage.setItem("selected_address", data.roadAddress);
+                    // ✅ WebView가 감지되면 postMessage 실행
+                    if (window.ReactNativeWebView) {
+                        window.ReactNativeWebView.postMessage(data.roadAddress);
+                    } else {
+                        console.warn("⚠️ WebView 감지 실패. postMessage 실행 불가.");
                     }
 
                     element_wrap.style.display = 'none';
@@ -36,9 +35,6 @@
             }).embed(element_wrap);
 
             element_wrap.style.display = 'block';
-
-            // ✅ WebView 감지 여부를 Console에서 확인
-            console.log("WebView 감지 상태:", window.ReactNativeWebView);
         }
     </script>
     <style>
@@ -67,4 +63,26 @@
             z-index: 100;
             overflow: auto;
             border: 1px solid #ccc;
-            box-shadow: 0px 0px 
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #search-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #ccc;
+            background: #f5f5f5;
+            color: #333;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <button id="search-button" onclick="openDaumPostcode()">주소 검색</button>
+    <div id="wrap"></div>
+</body>
+</html>

@@ -24,20 +24,18 @@
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function openDaumPostcode() {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>new daum.Postcode({</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>oncomplete: function(data) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ FlutterFlow WebView로 선택한 주소 전송</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>// ✅ 선택한 주소를 FlutterFlow WebView로 전송</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (window.ReactNativeWebView) {</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>window.ReactNativeWebView.postMessage(data.roadAddress);</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("FlutterFlow WebView가 감지되지 않았습니다.");</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>alert("WebView가 감지되지 않았습니다.");</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}).open();</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ 페이지가 로드되면 자동으로 주소 검색 실행</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = function() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>openDaumPostcode();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// ✅ 페이지 로드 시 자동 실행</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>window.onload = openDaumPostcode;</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
 <p class="p1"><span class="s1">&lt;body&gt;</span></p>

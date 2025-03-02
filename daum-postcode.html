@@ -15,10 +15,11 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ FlutterFlow에서 감지할 수 있도록 URL 변경
-                    window.location.href = "myapp://addressSelected?address=" + encodeURIComponent(data.roadAddress);
+                    // ✅ FlutterFlow가 감지할 수 있도록 URL 변경 (window.history.replaceState 사용)
+                    let newUrl = window.location.origin + window.location.pathname + "?address=" + encodeURIComponent(data.roadAddress);
+                    window.history.replaceState({}, '', newUrl);
 
-                    // ✅ FlutterFlow WebView에서 직접 받을 수 있도록 postMessage 추가
+                    // ✅ WebView에서 postMessage를 사용해 FlutterFlow로 데이터 전달
                     if (window.ReactNativeWebView) {
                         window.ReactNativeWebView.postMessage(data.roadAddress);
                     } else {

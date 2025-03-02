@@ -6,25 +6,55 @@
     <title>카카오 주소 검색</title>
     <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
-        function openDaumPostcode() {
+        window.onload = function() {
             var element_wrap = document.getElementById('wrap');
 
             new daum.Postcode({
-                width: 350, 
-                height: 800, 
+                width: "100%",
+                height: "100%",
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
                     // ✅ FlutterFlow에서 감지할 수 있도록 URL 변경
-                    window.location.href = "https://yourapp.com/addressSelected?address=" + encodeURIComponent(data.roadAddress);
+                    window.location.href = "myapp://addressSelected?address=" + encodeURIComponent(data.roadAddress);
+
+                    // ✅ FlutterFlow WebView에서 직접 받을 수 있도록 postMessage 추가
+                    if (window.ReactNativeWebView) {
+                        window.ReactNativeWebView.postMessage(data.roadAddress);
+                    } else {
+                        console.warn("⚠️ WebView 감지 실패. postMessage 실행 불가.");
+                    }
                 }
             }).embed(element_wrap);
-
-            element_wrap.style.display = 'block';
-        }
+        };
     </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            width: 390px;
+            height: 800px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        #wrap {
+            width: 390px;
+            height: 800px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: white;
+            z-index: 100;
+            overflow: auto;
+        }
+    </style>
 </head>
-<body onload="openDaumPostcode()">
+<body>
     <div id="wrap"></div>
 </body>
 </html>

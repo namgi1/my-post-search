@@ -18,21 +18,18 @@
                     // ✅ localStorage에 선택한 주소 저장
                     localStorage.setItem("selected_address", data.roadAddress);
 
-                    // ✅ 선택한 주소를 FlutterFlow WebView로 전달
+                    // ✅ FlutterFlow WebView로 데이터 전송
                     if (window.ReactNativeWebView) {
                         window.ReactNativeWebView.postMessage(data.roadAddress);
-                    } else {
-                        console.warn("⚠️ WebView 감지 실패. postMessage 실행 불가.");
                     }
 
-                    // ✅ URL 파라미터에 선택한 주소 추가 (선택사항)
-                    const newUrl = window.location.pathname + "?selected_address=" + encodeURIComponent(data.roadAddress);
-                    window.history.pushState({path: newUrl}, "", newUrl);
-
-                    // ✅ 선택한 주소를 화면에 표시
-                    document.getElementById("selected-address").innerText = "선택한 주소: " + data.roadAddress;
-
-                    element_wrap.style.display = 'none';
+                    // ✅ URL을 변경하여 FlutterFlow에서 감지 가능하도록 설정 & 이전 페이지로 이동
+                    window.location.href = "myapp://addressSelected?address=" + encodeURIComponent(data.roadAddress);
+                    
+                    // ✅ 일정 시간(0.5초) 후 FlutterFlow 이전 페이지로 자동 이동
+                    setTimeout(function() {
+                        window.history.back();
+                    }, 500);
                 },
                 onclose: function(state) {
                     if (state === 'COMPLETE_CLOSE') {
@@ -44,7 +41,7 @@
             element_wrap.style.display = 'block';
         }
 
-        // ✅ WebView에서 페이지 로드 시 저장된 주소 불러오기 (선택사항)
+        // ✅ WebView에서 페이지 로드 시 저장된 주소 불러오기
         window.onload = function() {
             const savedAddress = localStorage.getItem("selected_address");
             if (savedAddress) {
@@ -81,20 +78,6 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
-        #search-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 8px 12px;
-            font-size: 14px;
-            text-align: center;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            color: #333;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
         #selected-address {
             position: absolute;
             top: 50px;
@@ -104,8 +87,7 @@
         }
     </style>
 </head>
-<body>
-    <button id="search-button" onclick="openDaumPostcode()">주소 검색</button>
+<body onload="openDaumPostcode()">
     <div id="wrap"></div>
     <div id="selected-address">선택한 주소 없음</div>
 </body>

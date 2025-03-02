@@ -15,17 +15,11 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ localStorage에 선택한 주소 저장
-                    localStorage.setItem("selected_address", data.roadAddress);
-
-                    // ✅ FlutterFlow WebView로 데이터 전송
+                    // ✅ FlutterFlow WebView로 데이터 전송 (URL 방식 제거, postMessage 방식 사용)
                     if (window.ReactNativeWebView) {
                         window.ReactNativeWebView.postMessage(data.roadAddress);
                     }
 
-                    // ✅ URL을 변경하여 FlutterFlow에서 감지 가능하도록 설정 & 이전 페이지로 이동
-                    window.location.href = "myapp://addressSelected?address=" + encodeURIComponent(data.roadAddress);
-                    
                     // ✅ 일정 시간(0.5초) 후 FlutterFlow 이전 페이지로 자동 이동
                     setTimeout(function() {
                         window.history.back();
@@ -40,14 +34,6 @@
 
             element_wrap.style.display = 'block';
         }
-
-        // ✅ WebView에서 페이지 로드 시 저장된 주소 불러오기
-        window.onload = function() {
-            const savedAddress = localStorage.getItem("selected_address");
-            if (savedAddress) {
-                document.getElementById("selected-address").innerText = "이전 선택 주소: " + savedAddress;
-            }
-        };
     </script>
     <style>
         * {
@@ -77,18 +63,9 @@
             border: 1px solid #ccc;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-
-        #selected-address {
-            position: absolute;
-            top: 50px;
-            left: 10px;
-            font-size: 14px;
-            color: #333;
-        }
     </style>
 </head>
 <body onload="openDaumPostcode()">
     <div id="wrap"></div>
-    <div id="selected-address">선택한 주소 없음</div>
 </body>
 </html>

@@ -15,15 +15,8 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ FlutterFlow WebView로 데이터 전송 (URL 방식 제거, postMessage 방식 사용)
-                    if (window.ReactNativeWebView) {
-                        window.ReactNativeWebView.postMessage(data.roadAddress);
-                    }
-
-                    // ✅ 일정 시간(0.5초) 후 FlutterFlow 이전 페이지로 자동 이동
-                    setTimeout(function() {
-                        window.history.back();
-                    }, 500);
+                    // ✅ URL을 변경하여 FlutterFlow에서 감지 가능하도록 설정
+                    window.location.href = "https://yourapp.com/addressSelected?address=" + encodeURIComponent(data.roadAddress);
                 },
                 onclose: function(state) {
                     if (state === 'COMPLETE_CLOSE') {

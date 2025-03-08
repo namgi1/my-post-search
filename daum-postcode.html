@@ -22,9 +22,8 @@
                         console.warn("⚠️ WebView 감지 실패. postMessage 실행 불가.");
                     }
 
-                    // ✅ FlutterFlow에서 감지할 수 있도록 URL 변경 (새로고침 없이 변경)
-                    let newUrl = window.location.origin + window.location.pathname + "?address=" + encodeURIComponent(data.roadAddress);
-                    window.history.pushState({}, '', newUrl);
+                    // ✅ FlutterFlow 회원가입(SignUp) 페이지로 이동하면서 주소 데이터 전달
+                    window.location.href = "https://hallie-3ujs2s.flutterflow.app/SignUp?selectedAddress=" + encodeURIComponent(data.roadAddress);
                 }
             }).embed(element_wrap);
         };

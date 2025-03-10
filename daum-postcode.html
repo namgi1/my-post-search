@@ -15,8 +15,19 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ FlutterFlow 회원가입(SignUp) 페이지로 이동하면서 주소 데이터 전달
-                    window.location.href = "https://hallie-3ujs2s.flutterflow.app/SignUp?selectedAddress=" + encodeURIComponent(data.roadAddress);
+                    // ✅ 기존 URL에서 Page Parameter 가져오기
+                    const params = new URLSearchParams(window.location.search);
+                    const email = params.get("email") || "";
+                    const name = params.get("name") || "";
+                    const phoneNumber = params.get("phoneNumber") || "";
+                    const gender = params.get("gender") || "";
+                    const birthdate = params.get("birthdate") || "";
+
+                    // ✅ 기존 데이터 + 새 주소 정보를 포함해서 SignUp 페이지로 이동
+                    let newUrl = `https://hallie-3ujs2s.flutterflow.app/SignUp?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&phoneNumber=${encodeURIComponent(phoneNumber)}&gender=${encodeURIComponent(gender)}&birthdate=${encodeURIComponent(birthdate)}&selectedAddress=${encodeURIComponent(data.roadAddress)}`;
+
+                    console.log("🔗 이동할 URL:", newUrl);
+                    window.location.href = newUrl;
                 }
             }).embed(element_wrap);
         };

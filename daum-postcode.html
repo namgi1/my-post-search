@@ -23,11 +23,19 @@
                     const gender = params.get("gender") || "";
                     const birthdate = params.get("birthdate") || "";
 
-                    // ✅ 기존 데이터 + 새 주소 정보를 포함해서 SignUp 페이지로 이동
-                    let newUrl = `https://hallie-3ujs2s.flutterflow.app/SignUp?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&phoneNumber=${encodeURIComponent(phoneNumber)}&gender=${encodeURIComponent(gender)}&birthdate=${encodeURIComponent(birthdate)}&selectedAddress=${encodeURIComponent(data.roadAddress)}`;
+                    // ✅ 기존 데이터 유지 + 새 주소 추가 (URL만 변경)
+                    params.set("selectedAddress", data.roadAddress);
+                    let newUrl = window.location.pathname + "?" + params.toString();
 
-                    console.log("🔗 이동할 URL:", newUrl);
-                    window.location.href = newUrl;
+                    console.log("🔗 업데이트된 URL:", newUrl);
+                    window.history.pushState({}, '', newUrl);
+
+                    // ✅ FlutterFlow WebView에서 postMessage로 데이터 전달 (앱과 연동)
+                    if (window.ReactNativeWebView) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({
+                            selectedAddress: data.roadAddress
+                        }));
+                    }
                 }
             }).embed(element_wrap);
         };

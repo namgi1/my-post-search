@@ -15,27 +15,11 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ 기존 URL에서 Page Parameter 가져오기
-                    const params = new URLSearchParams(window.location.search);
-                    const email = params.get("email") || "";
-                    const name = params.get("name") || "";
-                    const phoneNumber = params.get("phoneNumber") || "";
-                    const gender = params.get("gender") || "";
-                    const birthdate = params.get("birthdate") || "";
+                    // ✅ SignUp_Address 페이지로 이동하면서 주소 데이터 전달
+                    let newUrl = `https://hallie-3ujs2s.flutterflow.app/SignUp_Address?selectedAddress=${encodeURIComponent(data.roadAddress)}`;
 
-                    // ✅ 기존 데이터 유지 + 새 주소 추가 (URL만 변경)
-                    params.set("selectedAddress", data.roadAddress);
-                    let newUrl = window.location.pathname + "?" + params.toString();
-
-                    console.log("🔗 업데이트된 URL:", newUrl);
-                    window.history.pushState({}, '', newUrl);
-
-                    // ✅ FlutterFlow WebView에서 postMessage로 데이터 전달 (앱과 연동)
-                    if (window.ReactNativeWebView) {
-                        window.ReactNativeWebView.postMessage(JSON.stringify({
-                            selectedAddress: data.roadAddress
-                        }));
-                    }
+                    console.log("🔗 이동할 URL:", newUrl);
+                    window.location.href = newUrl;
                 }
             }).embed(element_wrap);
         };

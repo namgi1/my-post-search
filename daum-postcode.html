@@ -15,8 +15,12 @@
                 oncomplete: function(data) {
                     console.log("✅ 주소 선택됨:", data.roadAddress);
 
-                    // ✅ Add_Address 페이지로 이동하면서 주소 데이터 전달
-                    let newUrl = `https://hallie-3ujs2s.flutterflow.app/Add_Address?selectedAddress=${encodeURIComponent(data.roadAddress)}`;
+                    // ✅ 기존 URL에서 Page Parameter 가져오기 (다른 정보 유지)
+                    const params = new URLSearchParams(window.location.search);
+                    params.set("selectedAddress", data.roadAddress);
+                    
+                    // ✅ Add_Address 페이지로 이동하면서 선택한 주소 전달
+                    let newUrl = `https://hallie-3ujs2s.flutterflow.app/Add_Address?${params.toString()}`;
 
                     console.log("🔗 이동할 URL:", newUrl);
                     window.location.href = newUrl;

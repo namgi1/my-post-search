@@ -5,57 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>카카오 주소 검색</title>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script>
-    window.onload = function () {
-      var element_wrap = document.getElementById("wrap");
-
-      new daum.Postcode({
-        width: "100%",
-        height: "100%",
-        oncomplete: function (data) {
-          console.log("✅ 주소 선택됨:", data.roadAddress);
-
-          // 주소 값을 FlutterFlow로 넘기기 위해 특정 URL로 이동 (Navigation Change 감지용)
-          const address = encodeURIComponent(data.roadAddress);
-          const zip = encodeURIComponent(data.zonecode);
-
-          // ✅ 이 주소는 FlutterFlow에서 Navigation Change로 감지할 것!
-          const callbackURL = `https://callback.flutterflow.app/address?address=${address}&zip=${zip}`;
-
-          console.log("🔗 이동할 URL:", callbackURL);
-          window.location.href = callbackURL;
-        },
-      }).embed(element_wrap);
-    };
-  </script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body,
-    html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #fff;
-    }
-
-    #wrap {
-      width: 100%;
-      height: 100%;
+    html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+    #wrap { width: 100%; height: 100%; }
+    #buttonWrap {
       position: fixed;
-      top: 0;
-      left: 0;
-      background: white;
-      z-index: 100;
-      overflow: auto;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+    }
+    #submitBtn {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #3B82F6;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div id="wrap"></div>
+  <div id="buttonWrap">
+    <button id="submitBtn" onclick="submitAddress()">선택 완료</button>
+  </div>
+
+  <script>
+    let selectedAddress = "";
+
+    window.onload = function () {
+      new daum.Postcode({
+        oncomplete: function (data) {
+          selectedAddress = data.roadAddress;
+        }
+      }).embed(document.getElementById("wrap"));
+    };
+
+    function submitAddress() {
+      if (!selectedAddress) {
+        alert("주소를 먼저 선택해주세요.");
+        return;
+      }
+
+      const encoded = encodeURIComponent(selectedAddress);
+
+      // ✅ 여기에 네 앱의 주소를 넣어줘!
+      window.location.href = `https://hallie-3ujs2s.flutterflow.app/AddAddress?address=${encoded}`;
+    }
+  </script>
 </body>
 </html>

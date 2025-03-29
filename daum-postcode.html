@@ -6,7 +6,7 @@
   <title>카카오 주소 검색</title>
   <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <style>
-    html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+    html, body { width: 100%; height: 100%; margin: 0; padding: 0; background-color: #fff; }
     #wrap { width: 100%; height: 100%; }
     #buttonWrap {
       position: fixed;
@@ -23,10 +23,17 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    #result {
+      text-align: center;
+      padding: 16px;
+      font-size: 18px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
   <div id="wrap"></div>
+  <div id="result">선택된 주소가 여기에 표시됩니다.</div>
   <div id="buttonWrap">
     <button id="submitBtn" onclick="submitAddress()">선택 완료</button>
   </div>
@@ -38,6 +45,7 @@
       new daum.Postcode({
         oncomplete: function (data) {
           selectedAddress = data.roadAddress;
+          document.getElementById('result').innerText = selectedAddress;
         }
       }).embed(document.getElementById("wrap"));
     };
@@ -50,8 +58,8 @@
 
       const encoded = encodeURIComponent(selectedAddress);
 
-      // ✅ 여기에 네 앱의 주소를 넣어줘!
-      window.location.href = `https://hallie-3ujs2s.flutterflow.app/AddAddress?address=${encoded}`;
+      // ✅ 여기 너의 FlutterFlow 배포 주소를 입력해줘
+      window.location.href = `https://hallie-3ujs2s.flutterflow.app/addAddress?selectedAddress=${encoded}`;
     }
   </script>
 </body>

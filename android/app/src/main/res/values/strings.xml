@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-    <string name="app_name">hallie</string>
-    <string name="facebook_app_id">1301739841030680</string>
-    <string name="fb_login_protocol_scheme">fb1301739841030680</string>
-    
+    <string name="app_name">Hallie</string>
+    <string name="facebook_app_id">494214060422743</string>
+    <string name="fb_login_protocol_scheme">fb494214060422743</string>
+     <string name="facebook_client_token">fb64eeb3ca7c6b6decda384d8ae05f8c</string>
           
 </resources>

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>hallie</string>
+	<string>Hallie</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -13,9 +13,16 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>hallie</string>
+	<string>Hallie</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ko</string>
+		<string>en</string>
+		<string>id</string>
+		<string>bn</string>
+	</array>
 
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
@@ -29,7 +36,7 @@
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>com.googleusercontent.apps.298850343781-n7mkl6n08g2ds1tpnad54ihcv0ostln8</string>
-                <string>fb1301739841030680</string>
+                <string>fb494214060422743</string>
             </array>
         </dict>
 
@@ -48,23 +55,33 @@
     <true/>
 
     <key>FacebookAppID</key>
-    <string>1301739841030680</string>
+    <string>494214060422743</string>
 
     <key>FacebookDisplayName</key>
-    <string>Hallie</string>
+    <string>hallie</string>
 
-    
+    <key>FacebookClientToken</key>
+    <string>fb64eeb3ca7c6b6decda384d8ae05f8c</string>
+
 
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 
+	<key>NSLocationWhenInUseUsageDescription</key>
+    <string>In order to search nearby, this app requires access to your current location.</string>
 	<key>NSCameraUsageDescription</key>
     <string>In order to take a picture or video, this app requires permission to access the camera.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>In order to upload data, this app requires permission to access the photo library.</string>
-
+	<key>PermissionGroupNotification</key>
+    <string>알람 허용</string>
+    <key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
 
     <key>LSApplicationQueriesSchemes</key>
     <array>
@@ -85,6 +102,7 @@
       <string>fbshareextension</string>
 
     </array>
+
 
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

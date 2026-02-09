@@ -3,13 +3,15 @@
 import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 import 'package:equatable/equatable.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:mime_type/mime_type.dart';
+import 'package:flutter/foundation.dart';
+import 'package:http/browser_client.dart'
+    if (dart.library.io) 'browser_client_stub.dart';
 
 import '/flutter_flow/uploaded_file.dart';
 
@@ -61,6 +63,43 @@ class ApiCallOptions extends Equatable {
   final bool alwaysAllowBody;
   final bool cache;
   final bool isStreamingApi;
+
+  /// Creates a new [ApiCallOptions] with optionally updated parameters.
+  ///
+  /// This helper function allows creating a copy of the current options while
+  /// selectively modifying specific fields. Any parameter that is not provided
+  /// will retain its original value from the current instance.
+  ApiCallOptions copyWith({
+    String? callName,
+    ApiCallType? callType,
+    String? apiUrl,
+    Map<String, dynamic>? headers,
+    Map<String, dynamic>? params,
+    BodyType? bodyType,
+    String? body,
+    bool? returnBody,
+    bool? encodeBodyUtf8,
+    bool? decodeUtf8,
+    bool? alwaysAllowBody,
+    bool? cache,
+    bool? isStreamingApi,
+  }) {
+    return ApiCallOptions(
+      callName: callName ?? this.callName,
+      callType: callType ?? this.callType,
+      apiUrl: apiUrl ?? this.apiUrl,
+      headers: headers ?? _cloneMap(this.headers),
+      params: params ?? _cloneMap(this.params),
+      bodyType: bodyType ?? this.bodyType,
+      body: body ?? this.body,
+      returnBody: returnBody ?? this.returnBody,
+      encodeBodyUtf8: encodeBodyUtf8 ?? this.encodeBodyUtf8,
+      decodeUtf8: decodeUtf8 ?? this.decodeUtf8,
+      alwaysAllowBody: alwaysAllowBody ?? this.alwaysAllowBody,
+      cache: cache ?? this.cache,
+      isStreamingApi: isStreamingApi ?? this.isStreamingApi,
+    );
+  }
 
   ApiCallOptions clone() => ApiCallOptions(
         callName: callName,
@@ -129,6 +168,29 @@ class ApiCallResponse {
       (jsonBody is String ? jsonBody as String : jsonEncode(jsonBody));
   String get exceptionMessage => exception.toString();
 
+  /// Creates a new [ApiCallResponse] with optionally updated parameters.
+  ///
+  /// This helper function allows creating a copy of the current response while
+  /// selectively modifying specific fields. Any parameter that is not provided
+  /// will retain its original value from the current instance.
+  ApiCallResponse copyWith({
+    dynamic jsonBody,
+    Map<String, String>? headers,
+    int? statusCode,
+    http.Response? response,
+    http.StreamedResponse? streamedResponse,
+    Object? exception,
+  }) {
+    return ApiCallResponse(
+      jsonBody ?? this.jsonBody,
+      headers ?? this.headers,
+      statusCode ?? this.statusCode,
+      response: response ?? this.response,
+      streamedResponse: streamedResponse ?? this.streamedResponse,
+      exception: exception ?? this.exception,
+    );
+  }
+
   static ApiCallResponse fromHttpResponse(
     http.Response response,
     bool returnBody,
@@ -166,10 +228,30 @@ class ApiManager {
   static ApiManager? _instance;
   static ApiManager get instance => _instance ??= ApiManager._();
 
+  /// Get HTTP client with optional credentials support for web
+  ///
+  /// Parameters:
+  ///   - withCredentials: Whether to include credentials (cookies) with requests
+  ///     Only applies to web platform (BrowserClient)
+  ///     Default: false
+  ///
+  /// Returns a platform-specific HTTP client:
+  ///   - Web: BrowserClient with credentials setting applied
+  ///   - Mobile/Desktop: Standard http.Client
+  static http.Client getClient({bool withCredentials = false}) {
+    // For web platform, return BrowserClient with appropriate settings
+    if (kIsWeb) {
+      return BrowserClient()..withCredentials = withCredentials;
+    }
+
+    // For mobile/desktop, return standard http.Client
+    // (credentials are handled differently on these platforms)
+    return http.Client();
+  }
+
   // If your API calls need authentication, populate this field once
   // the user has authenticated. Alter this as needed.
   static String? _accessToken;
-
   // You may want to call this if, for example, you make a change to the
   // database and no longer want the cached result of a call that may
   // have changed.
@@ -213,6 +295,7 @@ class ApiManager {
         streamedResponse: streamedResponse,
       );
     }
+
     final makeRequest = callType == ApiCallType.GET
         ? (client != null ? client.get : http.get)
         : (client != null ? client.delete : http.delete);
@@ -259,7 +342,7 @@ class ApiManager {
 
     if (bodyType == BodyType.MULTIPART) {
       return multipartRequest(type, apiUrl, headers, params, returnBody,
-          decodeUtf8, alwaysAllowBody);
+          decodeUtf8, alwaysAllowBody, client);
     }
 
     final requestFn = {
@@ -281,6 +364,7 @@ class ApiManager {
     bool returnBody,
     bool decodeUtf8,
     bool alwaysAllowBody,
+    http.Client? client,
   ) async {
     assert(
       {ApiCallType.POST, ApiCallType.PUT, ApiCallType.PATCH}.contains(type) ||
@@ -320,7 +404,8 @@ class ApiManager {
       ..files.addAll(files);
     nonFileParams.forEach((key, value) => request.fields[key] = value);
 
-    final response = await http.Response.fromStream(await request.send());
+    final response = await http.Response.fromStream(
+        await (client != null ? client.send(request) : request.send()));
     return ApiCallResponse.fromHttpResponse(response, returnBody, decodeUtf8);
   }
 

@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '/backend/backend.dart';
-import '/backend/schema/structs/index.dart';
 
 import '/auth/base_auth_user_provider.dart';
 
+import '/backend/push_notifications/push_notifications_handler.dart'
+    show PushNotificationsHandler;
 import '/main.dart';
-import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 
 import '/index.dart';
@@ -79,44 +79,49 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       refreshListenable: appStateNotifier,
       navigatorKey: appNavigatorKey,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : NavigateHomepageWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : LoginWidget(),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? NavBarPage()
+              : NavigateHomepageWidget(),
         ),
         FFRoute(
-          name: HomePageWidget.routeName,
-          path: HomePageWidget.routePath,
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'HomePage')
-              : HomePageWidget(),
+            name: HomePageWidget.routeName,
+            path: HomePageWidget.routePath,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'HomePage')
+                : NavBarPage(
+                    initialPage: 'HomePage',
+                    page: HomePageWidget(),
+                  )),
+        FFRoute(
+          name: ProductDetailWidget.routeName,
+          path: ProductDetailWidget.routePath,
+          builder: (context, params) => ProductDetailWidget(
+            productRef: params.getParam(
+              'productRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['products'],
+            ),
+          ),
         ),
         FFRoute(
-          name: LoginWidget.routeName,
-          path: LoginWidget.routePath,
-          builder: (context, params) => LoginWidget(),
-        ),
-        FFRoute(
-          name: Product1Widget.routeName,
-          path: Product1Widget.routePath,
-          builder: (context, params) => Product1Widget(),
-        ),
-        FFRoute(
-          name: CartWidget.routeName,
-          path: CartWidget.routePath,
-          builder: (context, params) =>
-              params.isEmpty ? NavBarPage(initialPage: 'Cart') : CartWidget(),
-        ),
+            name: CartWidget.routeName,
+            path: CartWidget.routePath,
+            builder: (context, params) => params.isEmpty
+                ? NavBarPage(initialPage: 'Cart')
+                : NavBarPage(
+                    initialPage: 'Cart',
+                    page: CartWidget(),
+                  )),
         FFRoute(
           name: CheckoutWidget.routeName,
           path: CheckoutWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: CheckoutWidget(),
-          ),
+          builder: (context, params) => CheckoutWidget(),
         ),
         FFRoute(
           name: SearchWidget.routeName,
@@ -124,11 +129,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'search')
               : SearchWidget(),
-        ),
-        FFRoute(
-          name: ProductRegistrationWidget.routeName,
-          path: ProductRegistrationWidget.routePath,
-          builder: (context, params) => ProductRegistrationWidget(),
         ),
         FFRoute(
           name: CategoryWidget.routeName,
@@ -145,69 +145,336 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               : MypageWidget(),
         ),
         FFRoute(
-          name: ProductListUserWidget.routeName,
-          path: ProductListUserWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: ProductListUserWidget(),
-          ),
-        ),
+            name: ProductListCategoryWidget.routeName,
+            path: ProductListCategoryWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: ProductListCategoryWidget(
+                    maincategory: params.getParam(
+                      'maincategory',
+                      ParamType.String,
+                    ),
+                    subcategory: params.getParam(
+                      'subcategory',
+                      ParamType.String,
+                    ),
+                  ),
+                )),
         FFRoute(
-          name: FavoritesWidget.routeName,
-          path: FavoritesWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: FavoritesWidget(),
-          ),
-        ),
+            name: ManageInformationWidget.routeName,
+            path: ManageInformationWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: ManageInformationWidget(),
+                )),
         FFRoute(
-          name: ManageInformationWidget.routeName,
-          path: ManageInformationWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: ManageInformationWidget(),
-          ),
-        ),
-        FFRoute(
-          name: ChangeMyInformationWidget.routeName,
-          path: ChangeMyInformationWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: ChangeMyInformationWidget(),
-          ),
-        ),
-        FFRoute(
-          name: ChangePhoneNumberWidget.routeName,
-          path: ChangePhoneNumberWidget.routePath,
-          builder: (context, params) => ChangePhoneNumberWidget(),
-        ),
-        FFRoute(
-          name: ChangePasswordWidget.routeName,
-          path: ChangePasswordWidget.routePath,
-          builder: (context, params) => ChangePasswordWidget(),
-        ),
-        FFRoute(
-          name: AuthenticationPasswordWidget.routeName,
-          path: AuthenticationPasswordWidget.routePath,
-          builder: (context, params) => AuthenticationPasswordWidget(),
-        ),
+            name: ChangeMyInformationWidget.routeName,
+            path: ChangeMyInformationWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: ChangeMyInformationWidget(),
+                )),
         FFRoute(
           name: AddressWidget.routeName,
           path: AddressWidget.routePath,
-          builder: (context, params) => NavBarPage(
-            initialPage: '',
-            page: AddressWidget(),
+          builder: (context, params) => AddressWidget(),
+        ),
+        FFRoute(
+          name: SignUp1Widget.routeName,
+          path: SignUp1Widget.routePath,
+          builder: (context, params) => SignUp1Widget(
+            userEmail: params.getParam(
+              'userEmail',
+              ParamType.String,
+            ),
+            userName: params.getParam(
+              'userName',
+              ParamType.String,
+            ),
+            method: params.getParam(
+              'method',
+              ParamType.String,
+            ),
           ),
         ),
         FFRoute(
-          name: SignUpWidget.routeName,
-          path: SignUpWidget.routePath,
-          builder: (context, params) => SignUpWidget(),
+          name: SelectedAddressWidget.routeName,
+          path: SelectedAddressWidget.routePath,
+          builder: (context, params) => SelectedAddressWidget(),
         ),
         FFRoute(
-          name: GdWidget.routeName,
-          path: GdWidget.routePath,
-          builder: (context, params) => GdWidget(),
+          name: NavigateHomepageWidget.routeName,
+          path: NavigateHomepageWidget.routePath,
+          builder: (context, params) => NavigateHomepageWidget(),
+        ),
+        FFRoute(
+          name: LoginWidget.routeName,
+          path: LoginWidget.routePath,
+          builder: (context, params) => LoginWidget(),
+        ),
+        FFRoute(
+          name: AddAddressWidget.routeName,
+          path: AddAddressWidget.routePath,
+          builder: (context, params) => AddAddressWidget(
+            roadaddress: params.getParam(
+              'roadaddress',
+              ParamType.String,
+            ),
+            address: params.getParam(
+              'address',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: AddressRefreshWidget.routeName,
+          path: AddressRefreshWidget.routePath,
+          builder: (context, params) => AddressRefreshWidget(),
+        ),
+        FFRoute(
+          name: EditAddressWidget.routeName,
+          path: EditAddressWidget.routePath,
+          asyncParams: {
+            'addressToEdit':
+                getDoc(['users', 'addresses'], AddressesRecord.fromSnapshot),
+          },
+          builder: (context, params) => EditAddressWidget(
+            addressToEdit: params.getParam(
+              'addressToEdit',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+            name: OrderDetailWidget.routeName,
+            path: OrderDetailWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: OrderDetailWidget(
+                    orderId: params.getParam(
+                      'orderId',
+                      ParamType.String,
+                    ),
+                  ),
+                )),
+        FFRoute(
+          name: CartRefreshWidget.routeName,
+          path: CartRefreshWidget.routePath,
+          builder: (context, params) => CartRefreshWidget(),
+        ),
+        FFRoute(
+            name: OrderListWidget.routeName,
+            path: OrderListWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: OrderListWidget(),
+                )),
+        FFRoute(
+          name: PaymentsuccessWidget.routeName,
+          path: PaymentsuccessWidget.routePath,
+          builder: (context, params) => PaymentsuccessWidget(
+            orderId: params.getParam(
+              'orderId',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: DeliverySearchWidget.routeName,
+          path: DeliverySearchWidget.routePath,
+          builder: (context, params) => DeliverySearchWidget(
+            deliverycode: params.getParam(
+              'deliverycode',
+              ParamType.String,
+            ),
+            deliverynumber: params.getParam(
+              'deliverynumber',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+            name: ProductListSearchWidget.routeName,
+            path: ProductListSearchWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: ProductListSearchWidget(
+                    searchword: params.getParam(
+                      'searchword',
+                      ParamType.String,
+                    ),
+                  ),
+                )),
+        FFRoute(
+            name: AllProductsWidget.routeName,
+            path: AllProductsWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: AllProductsWidget(
+                    option: params.getParam(
+                      'option',
+                      ParamType.String,
+                    ),
+                  ),
+                )),
+        FFRoute(
+          name: ReviewWidget.routeName,
+          path: ReviewWidget.routePath,
+          builder: (context, params) => ReviewWidget(
+            productId: params.getParam(
+              'productId',
+              ParamType.String,
+            ),
+            reviewId: params.getParam(
+              'reviewId',
+              ParamType.String,
+            ),
+            orderId: params.getParam(
+              'orderId',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+            name: MarketingPushWidget.routeName,
+            path: MarketingPushWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: MarketingPushWidget(),
+                )),
+        FFRoute(
+          name: Checkout2Widget.routeName,
+          path: Checkout2Widget.routePath,
+          builder: (context, params) => Checkout2Widget(
+            checkoutUrl: params.getParam(
+              'checkoutUrl',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+            name: LanguageWidget.routeName,
+            path: LanguageWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: LanguageWidget(),
+                )),
+        FFRoute(
+          name: TermWidget.routeName,
+          path: TermWidget.routePath,
+          builder: (context, params) => TermWidget(),
+        ),
+        FFRoute(
+          name: PrivacyWidget.routeName,
+          path: PrivacyWidget.routePath,
+          builder: (context, params) => PrivacyWidget(),
+        ),
+        FFRoute(
+          name: ReviewlistWidget.routeName,
+          path: ReviewlistWidget.routePath,
+          builder: (context, params) => ReviewlistWidget(
+            productRef: params.getParam(
+              'productRef',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['products'],
+            ),
+          ),
+        ),
+        FFRoute(
+          name: MyReviewsWidget.routeName,
+          path: MyReviewsWidget.routePath,
+          builder: (context, params) => MyReviewsWidget(),
+        ),
+        FFRoute(
+          name: NavigateMyReviewsWidget.routeName,
+          path: NavigateMyReviewsWidget.routePath,
+          builder: (context, params) => NavigateMyReviewsWidget(),
+        ),
+        FFRoute(
+          name: OrderCancelWidget.routeName,
+          path: OrderCancelWidget.routePath,
+          builder: (context, params) => OrderCancelWidget(
+            orderId: params.getParam(
+              'orderId',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: CouponListWidget.routeName,
+          path: CouponListWidget.routePath,
+          builder: (context, params) => CouponListWidget(),
+        ),
+        FFRoute(
+          name: MypointWidget.routeName,
+          path: MypointWidget.routePath,
+          builder: (context, params) => MypointWidget(),
+        ),
+        FFRoute(
+          name: HalalCertWidget.routeName,
+          path: HalalCertWidget.routePath,
+          builder: (context, params) => HalalCertWidget(
+            certNo: params.getParam(
+              'certNo',
+              ParamType.String,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: DeliverypolicyWidget.routeName,
+          path: DeliverypolicyWidget.routePath,
+          builder: (context, params) => DeliverypolicyWidget(),
+        ),
+        FFRoute(
+          name: HalalRestaurantMapWidget.routeName,
+          path: HalalRestaurantMapWidget.routePath,
+          builder: (context, params) => HalalRestaurantMapWidget(),
+        ),
+        FFRoute(
+          name: AddHalalRestaurantWidget.routeName,
+          path: AddHalalRestaurantWidget.routePath,
+          builder: (context, params) => AddHalalRestaurantWidget(
+            place: params.getParam(
+              'place',
+              ParamType.JSON,
+            ),
+          ),
+        ),
+        FFRoute(
+            name: HalalRestaurantSearchWidget.routeName,
+            path: HalalRestaurantSearchWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: HalalRestaurantSearchWidget(),
+                )),
+        FFRoute(
+            name: HalalRestaurantListWidget.routeName,
+            path: HalalRestaurantListWidget.routePath,
+            builder: (context, params) => NavBarPage(
+                  initialPage: '',
+                  page: HalalRestaurantListWidget(
+                    regiongroup: params.getParam(
+                      'regiongroup',
+                      ParamType.String,
+                    ),
+                    regiondetail: params.getParam(
+                      'regiondetail',
+                      ParamType.String,
+                    ),
+                  ),
+                )),
+        FFRoute(
+          name: HalalRestaurantWidget.routeName,
+          path: HalalRestaurantWidget.routePath,
+          builder: (context, params) => HalalRestaurantWidget(
+            halalrestaurant: params.getParam(
+              'halalrestaurant',
+              ParamType.DocumentReference,
+              isList: false,
+              collectionNamePath: ['HalalMap'],
+            ),
+          ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -380,7 +647,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/login';
+            return '/navigateHomepage';
           }
           return null;
         },
@@ -394,18 +661,16 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        FlutterFlowTheme.of(context).primary,
+              ? isWeb
+                  ? Container()
+                  : Container(
+                      color: Colors.transparent,
+                      child: Image.asset(
+                        'assets/images/__(1024_x_500_px)-2.png',
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
-                )
-              : page;
+                    )
+              : PushNotificationsHandler(child: page);
 
           final transitionInfo = state.transitionInfo;
           return transitionInfo.hasTransition

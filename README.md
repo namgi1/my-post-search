@@ -1,4 +1,4 @@
-# hallie
+# Hallie
 
 A new Flutter project.
 

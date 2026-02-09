@@ -1,0 +1,119 @@
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_web_view.dart';
+import 'package:flutter/material.dart';
+import 'term_model.dart';
+export 'term_model.dart';
+
+class TermWidget extends StatefulWidget {
+  const TermWidget({super.key});
+
+  static String routeName = 'term';
+  static String routePath = '/term';
+
+  @override
+  State<TermWidget> createState() => _TermWidgetState();
+}
+
+class _TermWidgetState extends State<TermWidget> {
+  late TermModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => TermModel());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => safeSetState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        body: SafeArea(
+          top: true,
+          child: Align(
+            alignment: AlignmentDirectional(0.0, 0.0),
+            child: Container(
+              width: MediaQuery.sizeOf(context).width < kBreakpointLarge
+                  ? double.infinity
+                  : 600.0,
+              decoration: BoxDecoration(),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 8.0, 20.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FlutterFlowIconButton(
+                          borderRadius: 8.0,
+                          buttonSize: 40.0,
+                          icon: Icon(
+                            Icons.chevron_left,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: () async {
+                            context.safePop();
+                          },
+                        ),
+                        Text(
+                          FFLocalizations.of(context).getText(
+                            'dkpuc1ti' /* 서비스 이용약관 */,
+                          ),
+                          style:
+                              FlutterFlowTheme.of(context).titleLarge.override(
+                                    fontFamily: 'ko',
+                                    letterSpacing: 0.0,
+                                  ),
+                        ),
+                        Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                      ].divide(SizedBox(width: 16.0)),
+                    ),
+                  ),
+                  Expanded(
+                    child: FlutterFlowWebView(
+                      content:
+                          'https://docs.google.com/document/d/e/2PACX-1vTxE85418oPDQANS5eeoWh9aOAd9wnSz_Q--8WWszHKDZrpuaz3UxlDdG2Lktuw4ylnu3Boe5h0RdRA/pub',
+                      bypass: false,
+                      height: 800.0,
+                      verticalScroll: true,
+                      horizontalScroll: false,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

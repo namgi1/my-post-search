@@ -45,15 +45,17 @@ class AddressesRecord extends FirestoreRecord {
   String get postalCode => _postalCode ?? '';
   bool hasPostalCode() => _postalCode != null;
 
-  // "user_id" field.
-  String? _userId;
-  String get userId => _userId ?? '';
-  bool hasUserId() => _userId != null;
-
-  // "created_at" field.
+  // "created_At" field.
   DateTime? _createdAt;
   DateTime? get createdAt => _createdAt;
   bool hasCreatedAt() => _createdAt != null;
+
+  // "road_address" field.
+  String? _roadAddress;
+  String get roadAddress => _roadAddress ?? '';
+  bool hasRoadAddress() => _roadAddress != null;
+
+  DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
     _address = snapshotData['address'] as String?;
@@ -62,12 +64,17 @@ class AddressesRecord extends FirestoreRecord {
     _name = snapshotData['name'] as String?;
     _phone = snapshotData['phone'] as String?;
     _postalCode = snapshotData['postal_code'] as String?;
-    _userId = snapshotData['user_id'] as String?;
-    _createdAt = snapshotData['created_at'] as DateTime?;
+    _createdAt = snapshotData['created_At'] as DateTime?;
+    _roadAddress = snapshotData['road_address'] as String?;
   }
 
-  static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('addresses');
+  static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
+      parent != null
+          ? parent.collection('addresses')
+          : FirebaseFirestore.instance.collectionGroup('addresses');
+
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('addresses').doc(id);
 
   static Stream<AddressesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => AddressesRecord.fromSnapshot(s));
@@ -107,8 +114,8 @@ Map<String, dynamic> createAddressesRecordData({
   String? name,
   String? phone,
   String? postalCode,
-  String? userId,
   DateTime? createdAt,
+  String? roadAddress,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -118,8 +125,8 @@ Map<String, dynamic> createAddressesRecordData({
       'name': name,
       'phone': phone,
       'postal_code': postalCode,
-      'user_id': userId,
-      'created_at': createdAt,
+      'created_At': createdAt,
+      'road_address': roadAddress,
     }.withoutNulls,
   );
 
@@ -137,8 +144,8 @@ class AddressesRecordDocumentEquality implements Equality<AddressesRecord> {
         e1?.name == e2?.name &&
         e1?.phone == e2?.phone &&
         e1?.postalCode == e2?.postalCode &&
-        e1?.userId == e2?.userId &&
-        e1?.createdAt == e2?.createdAt;
+        e1?.createdAt == e2?.createdAt &&
+        e1?.roadAddress == e2?.roadAddress;
   }
 
   @override
@@ -149,8 +156,8 @@ class AddressesRecordDocumentEquality implements Equality<AddressesRecord> {
         e?.name,
         e?.phone,
         e?.postalCode,
-        e?.userId,
-        e?.createdAt
+        e?.createdAt,
+        e?.roadAddress
       ]);
 
   @override

@@ -1,5 +1,5 @@
 // ignore_for_file: unnecessary_getters_setters
-
+import '/backend/algolia/serialization_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '/backend/schema/util/firestore_util.dart';
@@ -8,81 +8,61 @@ import '/flutter_flow/flutter_flow_util.dart';
 
 class ShippingAddressStruct extends FFFirebaseStruct {
   ShippingAddressStruct({
-    String? recipientName,
-    String? phoneNumber,
-    String? postalCode,
-    String? addressLine1,
-    String? addressLine2,
-    bool? isDefault,
-    String? memo,
+    String? address,
+    String? detailAddress,
+    String? name,
+    String? phone,
+    String? roadAddress,
     FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
-  })  : _recipientName = recipientName,
-        _phoneNumber = phoneNumber,
-        _postalCode = postalCode,
-        _addressLine1 = addressLine1,
-        _addressLine2 = addressLine2,
-        _isDefault = isDefault,
-        _memo = memo,
+  })  : _address = address,
+        _detailAddress = detailAddress,
+        _name = name,
+        _phone = phone,
+        _roadAddress = roadAddress,
         super(firestoreUtilData);
 
-  // "recipientName" field.
-  String? _recipientName;
-  String get recipientName => _recipientName ?? '';
-  set recipientName(String? val) => _recipientName = val;
+  // "address" field.
+  String? _address;
+  String get address => _address ?? '';
+  set address(String? val) => _address = val;
 
-  bool hasRecipientName() => _recipientName != null;
+  bool hasAddress() => _address != null;
 
-  // "phoneNumber" field.
-  String? _phoneNumber;
-  String get phoneNumber => _phoneNumber ?? '';
-  set phoneNumber(String? val) => _phoneNumber = val;
+  // "detail_address" field.
+  String? _detailAddress;
+  String get detailAddress => _detailAddress ?? '';
+  set detailAddress(String? val) => _detailAddress = val;
 
-  bool hasPhoneNumber() => _phoneNumber != null;
+  bool hasDetailAddress() => _detailAddress != null;
 
-  // "postalCode" field.
-  String? _postalCode;
-  String get postalCode => _postalCode ?? '';
-  set postalCode(String? val) => _postalCode = val;
+  // "name" field.
+  String? _name;
+  String get name => _name ?? '';
+  set name(String? val) => _name = val;
 
-  bool hasPostalCode() => _postalCode != null;
+  bool hasName() => _name != null;
 
-  // "addressLine1" field.
-  String? _addressLine1;
-  String get addressLine1 => _addressLine1 ?? '';
-  set addressLine1(String? val) => _addressLine1 = val;
+  // "phone" field.
+  String? _phone;
+  String get phone => _phone ?? '';
+  set phone(String? val) => _phone = val;
 
-  bool hasAddressLine1() => _addressLine1 != null;
+  bool hasPhone() => _phone != null;
 
-  // "addressLine2" field.
-  String? _addressLine2;
-  String get addressLine2 => _addressLine2 ?? '';
-  set addressLine2(String? val) => _addressLine2 = val;
+  // "road_address" field.
+  String? _roadAddress;
+  String get roadAddress => _roadAddress ?? '';
+  set roadAddress(String? val) => _roadAddress = val;
 
-  bool hasAddressLine2() => _addressLine2 != null;
-
-  // "isDefault" field.
-  bool? _isDefault;
-  bool get isDefault => _isDefault ?? false;
-  set isDefault(bool? val) => _isDefault = val;
-
-  bool hasIsDefault() => _isDefault != null;
-
-  // "memo" field.
-  String? _memo;
-  String get memo => _memo ?? '';
-  set memo(String? val) => _memo = val;
-
-  bool hasMemo() => _memo != null;
+  bool hasRoadAddress() => _roadAddress != null;
 
   static ShippingAddressStruct fromMap(Map<String, dynamic> data) =>
       ShippingAddressStruct(
-        recipientName: data['recipientName'] as String?,
-        phoneNumber: data['phoneNumber'] as String?,
-        postalCode: data['postalCode'] as String?,
-        addressLine1: data['addressLine1'] as String?,
-        addressLine2: data['addressLine2'] as String?,
-        isDefault: data['isDefault'] as bool?,
-        memo: data['memo'] as String?,
+        address: data['address'] as String?,
+        detailAddress: data['detail_address'] as String?,
+        name: data['name'] as String?,
+        phone: data['phone'] as String?,
+        roadAddress: data['road_address'] as String?,
       );
 
   static ShippingAddressStruct? maybeFromMap(dynamic data) => data is Map
@@ -90,83 +70,96 @@ class ShippingAddressStruct extends FFFirebaseStruct {
       : null;
 
   Map<String, dynamic> toMap() => {
-        'recipientName': _recipientName,
-        'phoneNumber': _phoneNumber,
-        'postalCode': _postalCode,
-        'addressLine1': _addressLine1,
-        'addressLine2': _addressLine2,
-        'isDefault': _isDefault,
-        'memo': _memo,
+        'address': _address,
+        'detail_address': _detailAddress,
+        'name': _name,
+        'phone': _phone,
+        'road_address': _roadAddress,
       }.withoutNulls;
 
   @override
   Map<String, dynamic> toSerializableMap() => {
-        'recipientName': serializeParam(
-          _recipientName,
+        'address': serializeParam(
+          _address,
           ParamType.String,
         ),
-        'phoneNumber': serializeParam(
-          _phoneNumber,
+        'detail_address': serializeParam(
+          _detailAddress,
           ParamType.String,
         ),
-        'postalCode': serializeParam(
-          _postalCode,
+        'name': serializeParam(
+          _name,
           ParamType.String,
         ),
-        'addressLine1': serializeParam(
-          _addressLine1,
+        'phone': serializeParam(
+          _phone,
           ParamType.String,
         ),
-        'addressLine2': serializeParam(
-          _addressLine2,
-          ParamType.String,
-        ),
-        'isDefault': serializeParam(
-          _isDefault,
-          ParamType.bool,
-        ),
-        'memo': serializeParam(
-          _memo,
+        'road_address': serializeParam(
+          _roadAddress,
           ParamType.String,
         ),
       }.withoutNulls;
 
   static ShippingAddressStruct fromSerializableMap(Map<String, dynamic> data) =>
       ShippingAddressStruct(
-        recipientName: deserializeParam(
-          data['recipientName'],
+        address: deserializeParam(
+          data['address'],
           ParamType.String,
           false,
         ),
-        phoneNumber: deserializeParam(
-          data['phoneNumber'],
+        detailAddress: deserializeParam(
+          data['detail_address'],
           ParamType.String,
           false,
         ),
-        postalCode: deserializeParam(
-          data['postalCode'],
+        name: deserializeParam(
+          data['name'],
           ParamType.String,
           false,
         ),
-        addressLine1: deserializeParam(
-          data['addressLine1'],
+        phone: deserializeParam(
+          data['phone'],
           ParamType.String,
           false,
         ),
-        addressLine2: deserializeParam(
-          data['addressLine2'],
+        roadAddress: deserializeParam(
+          data['road_address'],
           ParamType.String,
           false,
         ),
-        isDefault: deserializeParam(
-          data['isDefault'],
-          ParamType.bool,
-          false,
-        ),
-        memo: deserializeParam(
-          data['memo'],
+      );
+
+  static ShippingAddressStruct fromAlgoliaData(Map<String, dynamic> data) =>
+      ShippingAddressStruct(
+        address: convertAlgoliaParam(
+          data['address'],
           ParamType.String,
           false,
+        ),
+        detailAddress: convertAlgoliaParam(
+          data['detail_address'],
+          ParamType.String,
+          false,
+        ),
+        name: convertAlgoliaParam(
+          data['name'],
+          ParamType.String,
+          false,
+        ),
+        phone: convertAlgoliaParam(
+          data['phone'],
+          ParamType.String,
+          false,
+        ),
+        roadAddress: convertAlgoliaParam(
+          data['road_address'],
+          ParamType.String,
+          false,
+        ),
+        firestoreUtilData: FirestoreUtilData(
+          clearUnsetFields: false,
+          create: true,
         ),
       );
 
@@ -176,48 +169,35 @@ class ShippingAddressStruct extends FFFirebaseStruct {
   @override
   bool operator ==(Object other) {
     return other is ShippingAddressStruct &&
-        recipientName == other.recipientName &&
-        phoneNumber == other.phoneNumber &&
-        postalCode == other.postalCode &&
-        addressLine1 == other.addressLine1 &&
-        addressLine2 == other.addressLine2 &&
-        isDefault == other.isDefault &&
-        memo == other.memo;
+        address == other.address &&
+        detailAddress == other.detailAddress &&
+        name == other.name &&
+        phone == other.phone &&
+        roadAddress == other.roadAddress;
   }
 
   @override
-  int get hashCode => const ListEquality().hash([
-        recipientName,
-        phoneNumber,
-        postalCode,
-        addressLine1,
-        addressLine2,
-        isDefault,
-        memo
-      ]);
+  int get hashCode => const ListEquality()
+      .hash([address, detailAddress, name, phone, roadAddress]);
 }
 
 ShippingAddressStruct createShippingAddressStruct({
-  String? recipientName,
-  String? phoneNumber,
-  String? postalCode,
-  String? addressLine1,
-  String? addressLine2,
-  bool? isDefault,
-  String? memo,
+  String? address,
+  String? detailAddress,
+  String? name,
+  String? phone,
+  String? roadAddress,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
   bool delete = false,
 }) =>
     ShippingAddressStruct(
-      recipientName: recipientName,
-      phoneNumber: phoneNumber,
-      postalCode: postalCode,
-      addressLine1: addressLine1,
-      addressLine2: addressLine2,
-      isDefault: isDefault,
-      memo: memo,
+      address: address,
+      detailAddress: detailAddress,
+      name: name,
+      phone: phone,
+      roadAddress: roadAddress,
       firestoreUtilData: FirestoreUtilData(
         clearUnsetFields: clearUnsetFields,
         create: create,
